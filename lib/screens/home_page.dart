@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'add_expense.dart';
 import 'budget_overview.dart';
 import '../providers/expense_provider.dart';
+import 'expense_chart_page.dart';
 import 'weekly_spending_chart.dart';
 import 'base_scaffold.dart';
 
@@ -14,27 +15,28 @@ class HomePage extends StatelessWidget {
       currentIndex: 0,
       onTabChanged: (index) {
         if (index == 1) {
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
-            MaterialPageRoute(
-              builder: (context) => ChangeNotifierProvider.value(
-                value: Provider.of<ExpenseProvider>(context, listen: false),
-                child: BudgetOverviewPage(),
-              ),
-            ),
+            MaterialPageRoute(builder: (context) => BudgetOverviewPage()),
+          );
+        } else if (index == 2) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => ExpenseChartPage()),
           );
         }
       },
       onAddExpense: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => AddExpensePage()),
-    ).then((result) {
-      if (result == true) {
-        Provider.of<ExpenseProvider>(context, listen: false).notifyListeners();
-      }
-    });
-  },
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => AddExpensePage()),
+        ).then((result) {
+          if (result == true) {
+            Provider.of<ExpenseProvider>(context, listen: false)
+                .notifyListeners();
+          }
+        });
+      },
       body: Consumer<ExpenseProvider>(
         builder: (context, expenseProvider, child) {
           List<double> weeklySpending = expenseProvider.getWeeklySpending();
@@ -50,7 +52,8 @@ class HomePage extends StatelessWidget {
                 ),
                 SizedBox(height: 30),
                 Text('Total Spent this week:',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    style:
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 SizedBox(height: 10),
                 Container(
                   padding: EdgeInsets.all(12),

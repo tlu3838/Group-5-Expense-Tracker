@@ -5,6 +5,7 @@ import '../models/expense_model.dart';
 import 'package:intl/intl.dart';
 import 'add_expense.dart';
 import 'base_scaffold.dart';
+import 'expense_chart_page.dart';
 import 'home_page.dart';
 
 extension DateTimeExtension on DateTime {
@@ -22,13 +23,18 @@ class BudgetOverviewPage extends StatelessWidget {
       title: 'Budget Overview',
       currentIndex: 1,
       onTabChanged: (index) {
-        if (index == 0) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => HomePage()),
-          );
-        }
-      },
+  if (index == 0) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => HomePage()),
+    );
+  } else if (index == 2) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => ExpenseChartPage()),
+    );
+  }
+},
       onAddExpense: () {
     Navigator.push(
       context,
@@ -77,7 +83,7 @@ class BudgetOverviewPage extends StatelessWidget {
                             color: Color.fromARGB(255, 89, 44, 135),
                             alignment: Alignment.centerRight,
                             padding: EdgeInsets.only(right: 20.0),
-                            child: Icon(Icons.delete, color: Colors.white),
+                            child: Icon(Icons.delete, color: const Color.fromARGB(255, 145, 142, 142)),
                           ),
                           direction: DismissDirection.endToStart,
                           onDismissed: (direction) {
@@ -97,7 +103,7 @@ class BudgetOverviewPage extends StatelessWidget {
                               children: [
                                 Text('\$${expense.amount.toStringAsFixed(2)}'),
                                 IconButton(
-                                  icon: Icon(Icons.delete, color: Colors.red),
+                                  icon: Icon(Icons.delete, color: const Color.fromARGB(255, 175, 172, 172)),
                                   onPressed: () {
                                     showDialog(
                                       context: context,
