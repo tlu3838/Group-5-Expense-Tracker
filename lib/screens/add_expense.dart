@@ -31,6 +31,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
       initialDate: selectedDate,
       firstDate: DateTime(2000),
       lastDate: DateTime.now(),
+      selectableDayPredicate: (DateTime val)=>val.weekday <=8,
     );
     if (picked != null && picked != selectedDate) {
       setState(() {

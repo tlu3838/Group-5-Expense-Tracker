@@ -17,23 +17,45 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Weekly Expense Overview'),
+        title: Text(
+          'Weekly Expense',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
       ),
       body: Consumer<ExpenseProvider>(
         builder: (context, expenseProvider, child) {
           List<double> weeklySpending = expenseProvider.getWeeklySpending();
-          
+          double totalSpent = weeklySpending.reduce((a, b) => a + b);
+
           return SingleChildScrollView(
             child: Column(
               children: [
                 Container(
-                  padding: EdgeInsets.all(16),
-                  color: Color.fromARGB(255, 79, 54, 93),
+                  padding: EdgeInsets.all(18),
+                  color: Color.fromARGB(255, 55, 54, 93),
                   child: WeeklySpendingChart(dailySpending: weeklySpending),
                 ),
+                SizedBox(height: 30),
+                Text('Total Spent this week:',
+                    style:
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                SizedBox(height: 10),
+                Container(
+                  padding: EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 87, 178, 126),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Text(
+                    '\$${totalSpent.toStringAsFixed(2)}',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
                 SizedBox(height: 20),
-                Text('Total Spent this week:', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                SizedBox(height: 20),               
               ],
             ),
           );
@@ -47,14 +69,14 @@ class _HomePageState extends State<HomePage> {
           ).then((result) {
             if (result == true) {
               // An expense was added, so notify listeners to rebuild the UI
-              Provider.of<ExpenseProvider>(context, listen: false).notifyListeners();
+              Provider.of<ExpenseProvider>(context, listen: false)
+                  .notifyListeners();
             }
           });
         },
         child: Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      //https://kymoraa.medium.com/a-simple-bottomappbar-in-flutter-4556b2365baf source for bottomnaviationbar layout
       bottomNavigationBar: BottomAppBar(
         shape: CircularNotchedRectangle(),
         notchMargin: 5.0,
@@ -80,7 +102,8 @@ class _HomePageState extends State<HomePage> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => ChangeNotifierProvider.value(
-                      value: Provider.of<ExpenseProvider>(context, listen: false),
+                      value:
+                          Provider.of<ExpenseProvider>(context, listen: false),
                       child: BudgetOverviewPage(),
                     ),
                   ),

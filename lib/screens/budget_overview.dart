@@ -4,6 +4,14 @@ import '../providers/expense_provider.dart';
 import '../models/expense_model.dart';
 import 'package:intl/intl.dart';
 
+extension DateTimeExtension on DateTime {
+  int get weekOfYear {
+    final firstJan = DateTime(year, 1, 1);
+    final dayOfYear = difference(firstJan).inDays;
+    return ((dayOfYear - weekday + 10) / 7).floor();
+  }
+}
+
 class BudgetOverviewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -29,7 +37,8 @@ class BudgetOverviewPage extends StatelessWidget {
           }
 
           // Sort weeks
-          List<int> sortedWeeks = expensesByWeek.keys.toList()..sort((a, b) => b.compareTo(a));
+          List<int> sortedWeeks = expensesByWeek.keys.toList()
+            ..sort((a, b) => b.compareTo(a));
 
           return ListView.builder(
             itemCount: sortedWeeks.length,
@@ -40,79 +49,80 @@ class BudgetOverviewPage extends StatelessWidget {
 
               return ExpansionTile(
                 title: Text('Week $weekNumber'),
-                children: weekExpenses.map((expense) => Dismissible(
-                  key: Key(expense.description + expense.date.toString()),
-                  background: Container(
-                    color: Colors.red,
-                    alignment: Alignment.centerRight,
-                    padding: EdgeInsets.only(right: 20.0),
-                    child: Icon(Icons.delete, color: Colors.white),
-                  ),
-                  direction: DismissDirection.endToStart,
-                  onDismissed: (direction) {
-                    expenseProvider.deleteExpense(expense);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('${expense.description} deleted')),
-                    );
-                  },
-                  child: ListTile(
-                    title: Text(expense.description),
-                    subtitle: Text('${expense.category} - ${DateFormat('MMM d, y').format(expense.date)}'),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text('\$${expense.amount.toStringAsFixed(2)}'),
-                        IconButton(
-                          icon: Icon(Icons.delete, color: Colors.red),
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text('Delete Expense'),
-                                  content: Text('Are you sure you want to delete this expense?'),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      child: Text('Cancel'),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
-                                    TextButton(
-                                      child: Text('Delete'),
-                                      onPressed: () {
-                                        expenseProvider.deleteExpense(expense);
-                                        Navigator.of(context).pop();
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(content: Text('${expense.description} deleted')),
-                                        );
-                                      },
-                                    ),
-                                  ],
-                                );
-                              },
+                children: weekExpenses
+                    .map((expense) => Dismissible(
+                          key: Key(
+                              expense.description + expense.date.toString()),
+                          background: Container(
+                            color: Color.fromARGB(255, 89, 44, 135),
+                            alignment: Alignment.centerRight,
+                            padding: EdgeInsets.only(right: 20.0),
+                            child: Icon(Icons.delete, color: Colors.white),
+                          ),
+                          direction: DismissDirection.endToStart,
+                          onDismissed: (direction) {
+                            expenseProvider.deleteExpense(expense);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  content:
+                                      Text('${expense.description} deleted')),
                             );
                           },
-                        ),
-                      ],
-                    ),
-                  ),
-                )).toList(),
+                          child: ListTile(
+                            title: Text(expense.description),
+                            subtitle: Text(
+                                '${expense.category} - ${DateFormat('MMM d, y').format(expense.date)}'),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text('\$${expense.amount.toStringAsFixed(2)}'),
+                                IconButton(
+                                  icon: Icon(Icons.delete, color: Colors.red),
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text('Delete Expense'),
+                                          content: Text(
+                                              'Are you sure you want to delete this expense?'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              child: Text('Cancel'),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                            TextButton(
+                                              child: Text('Delete'),
+                                              onPressed: () {
+                                                expenseProvider
+                                                    .deleteExpense(expense);
+                                                Navigator.of(context).pop();
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  SnackBar(
+                                                      content: Text(
+                                                          '${expense.description} deleted')),
+                                                );
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ))
+                    .toList(),
               );
             },
           );
         },
       ),
     );
-  }
-}
-
-extension DateTimeExtension on DateTime {
-  int get weekOfYear {
-    final firstJan = DateTime(year, 1, 1);
-    final daysOffset = firstJan.weekday-1;
-    final firstMonday = firstJan.add(Duration(days: (7 - daysOffset) % 7));
-    final diff = difference(firstMonday);
-    return (diff.inDays / 7).floor() + 1;
   }
 }
