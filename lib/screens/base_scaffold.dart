@@ -5,23 +5,25 @@ class BaseScaffold extends StatelessWidget {
   final String title;
   final int currentIndex;
   final Function(int) onTabChanged;
-  final Widget? floatingActionButton;
-  final FloatingActionButtonLocation? floatingActionButtonLocation;
+  final Function()? onAddExpense;
 
-  const BaseScaffold({super.key, 
+  const BaseScaffold({
+    super.key,
     required this.body,
     required this.title,
     required this.currentIndex,
     required this.onTabChanged,
-    this.floatingActionButton,
-    this.floatingActionButtonLocation,
+    this.onAddExpense,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(
+          title,
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
       ),
       body: body,
       bottomNavigationBar: BottomAppBar(
@@ -36,20 +38,25 @@ class BaseScaffold extends StatelessWidget {
             children: <Widget>[
               IconButton(
                 icon: const Icon(Icons.home),
-                color: currentIndex == 0 ? const Color.fromARGB(255, 247, 247, 247) : null,
+                color: currentIndex == 0 ? Color.fromARGB(255, 37, 185, 71) : null,
                 onPressed: () => onTabChanged(0),
               ),
               IconButton(
                 icon: const Icon(Icons.list_alt_rounded),
-                color: currentIndex == 1 ? const Color.fromARGB(255, 95, 50, 130) : null,
+                color: currentIndex == 1 ? Color.fromARGB(255, 56, 158, 221) : null,
                 onPressed: () => onTabChanged(1),
               ),
             ],
           ),
         ),
       ),
-      floatingActionButton: floatingActionButton,
-      floatingActionButtonLocation: floatingActionButtonLocation,
+      floatingActionButton: onAddExpense != null
+          ? FloatingActionButton(
+              onPressed: onAddExpense,
+              child: Icon(Icons.add),
+            )
+          : null,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }

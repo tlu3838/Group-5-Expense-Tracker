@@ -3,6 +3,9 @@ import 'package:provider/provider.dart';
 import '../providers/expense_provider.dart';
 import '../models/expense_model.dart';
 import 'package:intl/intl.dart';
+import 'add_expense.dart';
+import 'base_scaffold.dart';
+import 'home_page.dart';
 
 extension DateTimeExtension on DateTime {
   int get weekOfYear {
@@ -15,10 +18,27 @@ extension DateTimeExtension on DateTime {
 class BudgetOverviewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Budget Overview'),
-      ),
+    return BaseScaffold(
+      title: 'Budget Overview',
+      currentIndex: 1,
+      onTabChanged: (index) {
+        if (index == 0) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()),
+          );
+        }
+      },
+      onAddExpense: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => AddExpensePage()),
+    ).then((result) {
+      if (result == true) {
+        Provider.of<ExpenseProvider>(context, listen: false).notifyListeners();
+      }
+    });
+  },
       body: Consumer<ExpenseProvider>(
         builder: (context, expenseProvider, child) {
           final expenses = expenseProvider.expenses;

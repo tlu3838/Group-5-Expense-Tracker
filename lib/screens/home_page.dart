@@ -4,24 +4,37 @@ import 'add_expense.dart';
 import 'budget_overview.dart';
 import '../providers/expense_provider.dart';
 import 'weekly_spending_chart.dart';
+import 'base_scaffold.dart';
 
-class HomePage extends StatefulWidget {
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  int _currentIndex = 0;
-
+class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Weekly Expense',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-      ),
+    return BaseScaffold(
+      title: 'Weekly Expense',
+      currentIndex: 0,
+      onTabChanged: (index) {
+        if (index == 1) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChangeNotifierProvider.value(
+                value: Provider.of<ExpenseProvider>(context, listen: false),
+                child: BudgetOverviewPage(),
+              ),
+            ),
+          );
+        }
+      },
+      onAddExpense: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => AddExpensePage()),
+    ).then((result) {
+      if (result == true) {
+        Provider.of<ExpenseProvider>(context, listen: false).notifyListeners();
+      }
+    });
+  },
       body: Consumer<ExpenseProvider>(
         builder: (context, expenseProvider, child) {
           List<double> weeklySpending = expenseProvider.getWeeklySpending();
@@ -37,8 +50,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 SizedBox(height: 30),
                 Text('Total Spent this week:',
-                    style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 SizedBox(height: 10),
                 Container(
                   padding: EdgeInsets.all(12),
@@ -60,58 +72,6 @@ class _HomePageState extends State<HomePage> {
             ),
           );
         },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AddExpensePage()),
-          ).then((result) {
-            if (result == true) {
-              // An expense was added, so notify listeners to rebuild the UI
-              Provider.of<ExpenseProvider>(context, listen: false)
-                  .notifyListeners();
-            }
-          });
-        },
-        child: Icon(Icons.add),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomAppBar(
-        shape: CircularNotchedRectangle(),
-        notchMargin: 5.0,
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            IconButton(
-              icon: Icon(Icons.home),
-              onPressed: () {
-                setState(() {
-                  _currentIndex = 0;
-                });
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.list_alt_rounded),
-              onPressed: () {
-                setState(() {
-                  _currentIndex = 1;
-                });
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ChangeNotifierProvider.value(
-                      value:
-                          Provider.of<ExpenseProvider>(context, listen: false),
-                      child: BudgetOverviewPage(),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
       ),
     );
   }
