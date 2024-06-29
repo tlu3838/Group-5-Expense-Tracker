@@ -12,13 +12,16 @@ class ExpenseProvider with ChangeNotifier {
   }
   List<double> getWeeklySpending() {
   final now = DateTime.now();
-  final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
   List<double> weeklySpending = List.filled(7, 0.0);
 
   for (var expense in _expenses) {
-    if (expense.date.isAfter(startOfWeek.subtract(Duration(days: 1))) && 
-        expense.date.isBefore(now.add(Duration(days: 1)))) {
-      int dayIndex = expense.date.difference(startOfWeek).inDays;
+    // Find the start of the week (Sunday) for this expense
+    final startOfWeek = expense.date.subtract(Duration(days: expense.date.weekday % 7));
+    final endOfWeek = startOfWeek.add(Duration(days: 6));
+
+    // Check if the expense is within the current week
+    if (now.isAfter(startOfWeek) && now.isBefore(endOfWeek.add(Duration(days: 1)))) {
+      int dayIndex = expense.date.weekday % 7; // 0 for Sunday, 1 for Monday, etc.
       weeklySpending[dayIndex] += expense.amount;
     }
   }

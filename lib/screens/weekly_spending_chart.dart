@@ -23,8 +23,8 @@ class WeeklySpendingChart extends StatelessWidget {
             bottomTitles: AxisTitles(
               sideTitles: SideTitles(
                 showTitles: true,
-                getTitlesWidget: (value, meta) {
-                  const titles = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+                getTitlesWidget: (value, meta) {  //https://pub.dev/documentation/fl_chart/latest/fl_chart/GetTitleWidgetFunction.html
+                  const titles = ['Sun', 'Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat'];
                   return Text(titles[value.toInt()], style: const TextStyle(color: Colors.white, fontSize: 12));
                 },
               ),
