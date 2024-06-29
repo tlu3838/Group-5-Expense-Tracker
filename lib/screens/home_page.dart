@@ -54,6 +54,7 @@ class _HomePageState extends State<HomePage> {
         child: Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      //https://kymoraa.medium.com/a-simple-bottomappbar-in-flutter-4556b2365baf source for bottomnaviationbar layout
       bottomNavigationBar: BottomAppBar(
         shape: CircularNotchedRectangle(),
         notchMargin: 5.0,

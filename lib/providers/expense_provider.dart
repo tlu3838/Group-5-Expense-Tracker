@@ -10,22 +10,29 @@ class ExpenseProvider with ChangeNotifier {
     _expenses.add(expense);
     notifyListeners();
   }
-  List<double> getWeeklySpending() {
-  final now = DateTime.now();
-  List<double> weeklySpending = List.filled(7, 0.0);
-
-  for (var expense in _expenses) {
-    // Find the start of the week (Sunday) for this expense
-    final startOfWeek = expense.date.subtract(Duration(days: expense.date.weekday % 7));
-    final endOfWeek = startOfWeek.add(Duration(days: 6));
-
-    // Check if the expense is within the current week
-    if (now.isAfter(startOfWeek) && now.isBefore(endOfWeek.add(Duration(days: 1)))) {
-      int dayIndex = expense.date.weekday % 7; // 0 for Sunday, 1 for Monday, etc.
-      weeklySpending[dayIndex] += expense.amount;
-    }
+//delete method for budget overview screen
+  void deleteExpense(Expense expense) {
+    _expenses.remove(expense);
+    notifyListeners();
   }
 
-  return weeklySpending;
-}
+  List<double> getWeeklySpending() {
+    final now = DateTime.now();
+    final startOfWeek = now.subtract(Duration(days: now.weekday % 7));
+    List<double> weeklySpending = List.filled(7, 0.0);
+
+    for (var expense in _expenses) {
+      if (expense.date.isAfter(startOfWeek.subtract(Duration(days: 1))) &&
+          expense.date.isBefore(startOfWeek.add(Duration(days: 7)))) {
+        int dayIndex = expense.date
+            .difference(startOfWeek)
+            .inDays; // changed to set sunday to 0..tuesday is 2..etc
+        if (dayIndex >= 0 && dayIndex < 7) {
+          weeklySpending[dayIndex] += expense.amount;
+        }
+      }
+    }
+
+    return weeklySpending;
+  }
 }
