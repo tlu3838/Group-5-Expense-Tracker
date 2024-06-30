@@ -17,6 +17,8 @@ extension DateTimeExtension on DateTime {
 }
 
 class BudgetOverviewPage extends StatelessWidget {
+  const BudgetOverviewPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
@@ -26,7 +28,7 @@ class BudgetOverviewPage extends StatelessWidget {
   if (index == 0) {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => HomePage()),
+      MaterialPageRoute(builder: (context) => const HomePage()),
     );
   } else if (index == 2) {
     Navigator.pushReplacement(
@@ -38,9 +40,10 @@ class BudgetOverviewPage extends StatelessWidget {
       onAddExpense: () {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => AddExpensePage()),
+      MaterialPageRoute(builder: (context) => const AddExpensePage()),
     ).then((result) {
       if (result == true) {
+        // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
         Provider.of<ExpenseProvider>(context, listen: false).notifyListeners();
       }
     });
@@ -49,7 +52,7 @@ class BudgetOverviewPage extends StatelessWidget {
         builder: (context, expenseProvider, child) {
           final expenses = expenseProvider.expenses;
           if (expenses.isEmpty) {
-            return Center(child: Text('No expenses added yet.'));
+            return const Center(child: Text('No expenses added yet.'));
           }
 
           // Group expenses by week
@@ -80,10 +83,10 @@ class BudgetOverviewPage extends StatelessWidget {
                           key: Key(
                               expense.description + expense.date.toString()),
                           background: Container(
-                            color: Color.fromARGB(255, 89, 44, 135),
+                            color: const Color.fromARGB(255, 89, 44, 135),
                             alignment: Alignment.centerRight,
-                            padding: EdgeInsets.only(right: 20.0),
-                            child: Icon(Icons.delete, color: const Color.fromARGB(255, 145, 142, 142)),
+                            padding: const EdgeInsets.only(right: 20.0),
+                            child: const Icon(Icons.delete, color: Color.fromARGB(255, 145, 142, 142)),
                           ),
                           direction: DismissDirection.endToStart,
                           onDismissed: (direction) {
@@ -103,24 +106,24 @@ class BudgetOverviewPage extends StatelessWidget {
                               children: [
                                 Text('\$${expense.amount.toStringAsFixed(2)}'),
                                 IconButton(
-                                  icon: Icon(Icons.delete, color: const Color.fromARGB(255, 175, 172, 172)),
+                                  icon: const Icon(Icons.delete, color: Color.fromARGB(255, 175, 172, 172)),
                                   onPressed: () {
                                     showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
                                         return AlertDialog(
-                                          title: Text('Delete Expense'),
-                                          content: Text(
+                                          title: const Text('Delete Expense'),
+                                          content: const Text(
                                               'Are you sure you want to delete this expense?'),
                                           actions: <Widget>[
                                             TextButton(
-                                              child: Text('Cancel'),
+                                              child: const Text('Cancel'),
                                               onPressed: () {
                                                 Navigator.of(context).pop();
                                               },
                                             ),
                                             TextButton(
-                                              child: Text('Delete'),
+                                              child: const Text('Delete'),
                                               onPressed: () {
                                                 expenseProvider
                                                     .deleteExpense(expense);

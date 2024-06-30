@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fl_chart/fl_chart.dart';
 import '../providers/expense_provider.dart';
-import '../models/expense_model.dart';
 import 'add_expense.dart';
 import 'base_scaffold.dart';
 import 'budget_overview.dart';
@@ -17,6 +16,8 @@ class ExpenseChartPage extends StatelessWidget {
     Colors.purple,
   ];
 
+   ExpenseChartPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
@@ -26,21 +27,22 @@ class ExpenseChartPage extends StatelessWidget {
         if (index == 0) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => HomePage()),
+            MaterialPageRoute(builder: (context) => const HomePage()),
           );
         } else if (index == 1) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => BudgetOverviewPage()),
+            MaterialPageRoute(builder: (context) => const BudgetOverviewPage()),
           );
         }
       },
       onAddExpense: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => AddExpensePage()),
+          MaterialPageRoute(builder: (context) => const AddExpensePage()),
         ).then((result) {
           if (result == true) {
+            // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
             Provider.of<ExpenseProvider>(context, listen: false).notifyListeners();
           }
         });
@@ -74,7 +76,7 @@ class ExpenseChartPage extends StatelessWidget {
                   value: amount,
                   title: '${(amount / total * 100).toStringAsFixed(1)}%',
                   radius: 100,
-                  titleStyle: TextStyle(
+                  titleStyle: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
@@ -86,7 +88,7 @@ class ExpenseChartPage extends StatelessWidget {
           });
 
           return Container(
-            color: Color.fromARGB(239, 160, 148, 172),
+            color: const Color.fromARGB(239, 160, 148, 172),
             child: Column(
               children: [
                 Expanded(
@@ -112,7 +114,7 @@ class ExpenseChartPage extends StatelessWidget {
                                 height: 20,
                                 color: categoryColors[categoryTotals.keys.toList().indexOf(entry.key) % categoryColors.length],
                               ),
-                              SizedBox(width: 8),
+                              const SizedBox(width: 8),
                               Text(entry.key),
                             ],
                           ),

@@ -5,8 +5,7 @@ import 'package:intl/intl.dart';
 class WeeklySpendingChart extends StatelessWidget {
   final List<double> dailySpending;
 
-  const WeeklySpendingChart({Key? key, required this.dailySpending})
-      : super(key: key);
+  const WeeklySpendingChart({super.key, required this.dailySpending});
 
   @override
   Widget build(BuildContext context) {
@@ -15,15 +14,15 @@ class WeeklySpendingChart extends StatelessWidget {
 
     final now = DateTime.now();
     final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
-    final endOfWeek = startOfWeek.add(Duration(days: 6));
+    final endOfWeek = startOfWeek.add(const Duration(days: 6));
 
     return Column(
       children: [
         Text(
           'Week of ${DateFormat('MMM d').format(startOfWeek)} - ${DateFormat('MMM d').format(endOfWeek)}',
-          style: TextStyle(color: Colors.white, fontSize: 16),
+          style: const TextStyle(color: Colors.white, fontSize: 16),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         AspectRatio(
           aspectRatio: 2,
           child: BarChart(

@@ -8,6 +8,8 @@ import 'weekly_spending_chart.dart';
 import 'base_scaffold.dart';
 
 class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
@@ -17,7 +19,7 @@ class HomePage extends StatelessWidget {
         if (index == 1) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => BudgetOverviewPage()),
+            MaterialPageRoute(builder: (context) => const BudgetOverviewPage()),
           );
         } else if (index == 2) {
           Navigator.pushReplacement(
@@ -29,10 +31,11 @@ class HomePage extends StatelessWidget {
       onAddExpense: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => AddExpensePage()),
+          MaterialPageRoute(builder: (context) => const AddExpensePage()),
         ).then((result) {
           if (result == true) {
             Provider.of<ExpenseProvider>(context, listen: false)
+                // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
                 .notifyListeners();
           }
         });
@@ -46,31 +49,31 @@ class HomePage extends StatelessWidget {
             child: Column(
               children: [
                 Container(
-                  padding: EdgeInsets.all(18),
-                  color: Color.fromARGB(255, 55, 54, 93),
+                  padding: const EdgeInsets.all(18),
+                  color: const Color.fromARGB(255, 55, 54, 93),
                   child: WeeklySpendingChart(dailySpending: weeklySpending),
                 ),
-                SizedBox(height: 30),
-                Text('Total Spent this week:',
+                const SizedBox(height: 30),
+                const Text('Total Spent this week:',
                     style:
                         TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Container(
-                  padding: EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 87, 178, 126),
+                    color: const Color.fromARGB(255, 87, 178, 126),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Text(
                     '\$${totalSpent.toStringAsFixed(2)}',
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
               ],
             ),
           );

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 class BaseScaffold extends StatelessWidget {
@@ -24,7 +22,7 @@ class BaseScaffold extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           title,
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
       body: body,
@@ -41,20 +39,20 @@ class BaseScaffold extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.home),
                 color:
-                    currentIndex == 0 ? Color.fromARGB(255, 37, 185, 71) : null,
+                    currentIndex == 0 ? const Color.fromARGB(255, 37, 185, 71) : null,
                 onPressed: () => onTabChanged(0),
               ),
               IconButton(
                 icon: const Icon(Icons.list_alt_rounded),
                 color: currentIndex == 1
-                    ? Color.fromARGB(255, 60, 145, 195)
+                    ? const Color.fromARGB(255, 60, 145, 195)
                     : null,
                 onPressed: () => onTabChanged(1),
               ),
               IconButton(
                 icon: const Icon(Icons.pie_chart),
                 color: currentIndex == 2
-                    ? Color.fromARGB(255, 179, 81, 134)
+                    ? const Color.fromARGB(255, 179, 81, 134)
                     : null,
                 onPressed: () => onTabChanged(2),
               ),
@@ -62,13 +60,13 @@ class BaseScaffold extends StatelessWidget {
           ),
         ),
       ),
-      floatingActionButton: Container(        
+      floatingActionButton: SizedBox(        
         height: 40,
         width: 40,
         child: onAddExpense != null
             ? FloatingActionButton(
                 onPressed: onAddExpense,
-                child: Icon(Icons.add),
+                child: const Icon(Icons.add),
               )
             : null,
       ),

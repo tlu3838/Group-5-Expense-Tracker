@@ -7,6 +7,7 @@ class AddExpensePage extends StatefulWidget {
   const AddExpensePage({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _AddExpensePageState createState() => _AddExpensePageState();
 }
 
