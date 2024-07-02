@@ -9,6 +9,6 @@ PPT:
 https://docs.google.com/presentation/d/1cEC-e_0niQ-bm8N60uuaQlN7a98DSJkmEfQgHip3NMY/edit#slide=id.g2e991fde787_0_36
 
 Youtube: 
-https://youtu.be/WzhVC2HTwlU
+https://www.youtube.com/watch?v=ThN45HJ3dBs
 ## Getting Started
 
